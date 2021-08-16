@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"net/http"
 
-	signup "./Modules/Auth/SignUp"
+	signup "github.com/iremcelikbilek/YemeksepetiAppBackend/Modules/Auth/SignUp"
 )
 
 func main() {
