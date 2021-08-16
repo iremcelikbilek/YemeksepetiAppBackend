@@ -15,7 +15,7 @@ func HandleRestaurantListing(w http.ResponseWriter, r *http.Request) {
 	if fetchedData == nil {
 		w.WriteHeader(http.StatusNotFound)
 		response = util.GeneralResponseModel{
-			true, "Restoran bulunamadı", nil,
+			true, "Üzgünüz herhangi bir restoran bulunamadı", nil,
 		}
 		w.Write(response.ToJson())
 		return
