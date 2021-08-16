@@ -5,6 +5,8 @@ go 1.17
 require (
 	firebase.google.com/go v3.13.0+incompatible
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
+	github.com/mitchellh/mapstructure v1.4.1
+	golang.org/x/crypto v0.0.0-20200622213623-75b288015ac9
 	google.golang.org/api v0.54.0
 )
 
