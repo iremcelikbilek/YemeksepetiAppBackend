@@ -1,15 +1,14 @@
 package main
 
 import (
-	"fmt"
 	"net/http"
 
 	signup "github.com/iremcelikbilek/YemeksepetiAppBackend/Modules/Auth/SignUp"
+	fb "github.com/iremcelikbilek/YemeksepetiAppBackend/Modules/Firebase"
 )
 
 func main() {
-	fmt.Println("Hello")
-
+	go fb.ConnectFirebase()
 	go http.HandleFunc("/signup", signup.HandleSignUp)
 
 	err := http.ListenAndServe(":8080", nil)
