@@ -5,7 +5,6 @@ import (
 
 	fb "github.com/iremcelikbilek/YemeksepetiAppBackend/Modules/Firebase"
 	util "github.com/iremcelikbilek/YemeksepetiAppBackend/Modules/Utils"
-	"github.com/mitchellh/mapstructure"
 )
 
 func HandleCityListing(w http.ResponseWriter, r *http.Request) {
@@ -21,9 +20,6 @@ func HandleCityListing(w http.ResponseWriter, r *http.Request) {
 		w.Write(response.ToJson())
 		return
 	}
-
-	var cities []CityModel
-	mapstructure.Decode(fetchedData, &cities)
 
 	response = util.GeneralResponseModel{
 		false, "Başarılı", fetchedData,
