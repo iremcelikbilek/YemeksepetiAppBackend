@@ -7,7 +7,7 @@ import (
 	util "github.com/iremcelikbilek/YemeksepetiAppBackend/Modules/Utils"
 )
 
-func HandlecategorylistListing(w http.ResponseWriter, r *http.Request) {
+func HandleCategoryListing(w http.ResponseWriter, r *http.Request) {
 	util.HeaderManager(&w)
 	var response util.GeneralResponseModel
 
