@@ -9,6 +9,7 @@ import (
 )
 
 func HandleRestaurantListing(w http.ResponseWriter, r *http.Request) {
+	util.HeaderManager(&w)
 	var response util.GeneralResponseModel
 
 	fetchedData := fb.ReadData("/restaurants")

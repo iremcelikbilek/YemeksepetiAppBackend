@@ -16,6 +16,7 @@ import (
 var JWT_Token = []byte("YEMEK_SEPETI_JWT_TOKEN")
 
 func HandleLogin(w http.ResponseWriter, r *http.Request) {
+	util.HeaderManager(&w)
 	var response util.GeneralResponseModel
 	var loginData LoginModel
 

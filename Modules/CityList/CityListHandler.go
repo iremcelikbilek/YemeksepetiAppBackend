@@ -9,6 +9,7 @@ import (
 )
 
 func HandleCityListing(w http.ResponseWriter, r *http.Request) {
+	util.HeaderManager(&w)
 	var response util.GeneralResponseModel
 
 	fetchedData := fb.ReadData("/cities")
@@ -25,7 +26,7 @@ func HandleCityListing(w http.ResponseWriter, r *http.Request) {
 	mapstructure.Decode(fetchedData, &cities)
 
 	response = util.GeneralResponseModel{
-		false, "Giriş Başarılı", fetchedData,
+		false, "Başarılı", fetchedData,
 	}
 	w.Write(response.ToJson())
 }
