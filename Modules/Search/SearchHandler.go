@@ -65,7 +65,7 @@ func HandleSearchListing(w http.ResponseWriter, r *http.Request) {
 
 	var searchedRestaurants []listing.RestaurantModel
 	for _, value := range filteredRestaurants {
-		if strings.Contains(value.Name, searchData.Search) {
+		if strings.Contains(strings.ToLower(value.Name), strings.ToLower(searchData.Search)) {
 			searchedRestaurants = append(searchedRestaurants, value)
 		}
 	}
