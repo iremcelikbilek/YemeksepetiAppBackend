@@ -9,6 +9,7 @@ import (
 	cityList "github.com/iremcelikbilek/YemeksepetiAppBackend/Modules/CityList"
 	fb "github.com/iremcelikbilek/YemeksepetiAppBackend/Modules/Firebase"
 	listing "github.com/iremcelikbilek/YemeksepetiAppBackend/Modules/RestaurantListing"
+	search "github.com/iremcelikbilek/YemeksepetiAppBackend/Modules/Search"
 	user "github.com/iremcelikbilek/YemeksepetiAppBackend/Modules/User"
 )
 
@@ -20,6 +21,7 @@ func main() {
 	go http.HandleFunc("/cityList", cityList.HandleCityListing)
 	go http.HandleFunc("/user", user.HandleUserData)
 	go http.HandleFunc("/categoryList", categoryList.HandleCategoryListing)
+	go http.HandleFunc("/search", search.HandleSearchListing)
 
 	err := http.ListenAndServe(":8080", nil)
 	if err != nil {
