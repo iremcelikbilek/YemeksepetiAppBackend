@@ -33,17 +33,19 @@ func HandleRestaurantListing(w http.ResponseWriter, r *http.Request) {
 
 	if cityIdOk && len(cityId) == 1 {
 		for _, value := range restaurants {
-			if value.City_Id == cityId[0] {
+			if value.CityId == cityId[0] {
 				filteredRestaurants = append(filteredRestaurants, value)
 			}
 		}
-	} else if categoryIdOk && len(categoryId) == 1 {
+	}
+	if categoryIdOk && len(categoryId) == 1 {
 		for _, value := range restaurants {
 			if value.CategoryId == categoryId[0] {
 				filteredRestaurants = append(filteredRestaurants, value)
 			}
 		}
-	} else {
+	}
+	if !cityIdOk && !categoryIdOk {
 		filteredRestaurants = restaurants
 	}
 

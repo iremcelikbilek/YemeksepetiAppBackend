@@ -3,7 +3,7 @@ package restaurantlisting
 type RestaurantModel struct {
 	Name                 string      `json:"name"`
 	Id                   string      `json:"id"`
-	City_Id              string      `json:"city_id"`
+	CityId               string      `json:"city_id"`
 	EstimatedArrivalTime string      `json:"estimated_arrival_time"`
 	MinimumPrice         string      `json:"minimum_price"`
 	ImageUrl             string      `json:"image_url"`
