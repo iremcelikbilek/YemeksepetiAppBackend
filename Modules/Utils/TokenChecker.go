@@ -11,7 +11,7 @@ type Claims struct {
 	jwt.StandardClaims
 }
 
-var JWT_Token = []byte("PETNER_JWT_TOKEN")
+var JWT_Token = []byte("YEMEK_SEPETI_JWT_TOKEN")
 
 func CheckToken(r *http.Request) (bool, string) {
 	tokenString := r.Header.Get("token")
