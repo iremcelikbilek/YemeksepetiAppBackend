@@ -12,7 +12,19 @@ func HandleRestaurantListing(w http.ResponseWriter, r *http.Request) {
 	util.HeaderManager(&w)
 	var response util.GeneralResponseModel
 
-	fetchedData := fb.ReadData("/restaurants")
+	cityId, cityIdOk := r.URL.Query()["city"]
+	categoryId, categoryIdOk := r.URL.Query()["category"]
+
+	var fetchedData interface{}
+
+	if cityIdOk || len(cityId[0]) == 1 {
+		fetchedData = fb.GetFilteredData("/restaurants", "city_id", cityId[0])
+	} else if categoryIdOk || len(categoryId[0]) == 1 {
+		fetchedData = fb.GetFilteredData("/restaurants", "category_id", categoryId[0])
+	} else {
+		fetchedData = fb.ReadData("/restaurants")
+	}
+
 	if fetchedData == nil {
 		w.WriteHeader(http.StatusNotFound)
 		response = util.GeneralResponseModel{
@@ -26,7 +38,7 @@ func HandleRestaurantListing(w http.ResponseWriter, r *http.Request) {
 	mapstructure.Decode(fetchedData, &restaurants)
 
 	response = util.GeneralResponseModel{
-		false, "Giriş Başarılı", fetchedData,
+		false, "Listeleme Başarılı", fetchedData,
 	}
 	w.Write(response.ToJson())
 }
