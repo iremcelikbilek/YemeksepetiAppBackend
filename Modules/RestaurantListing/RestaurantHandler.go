@@ -17,9 +17,9 @@ func HandleRestaurantListing(w http.ResponseWriter, r *http.Request) {
 
 	var fetchedData interface{}
 
-	if cityIdOk || len(cityId[0]) == 1 {
+	if cityIdOk || len(cityId) == 1 {
 		fetchedData = fb.GetFilteredData("/restaurants", "city_id", cityId[0])
-	} else if categoryIdOk || len(categoryId[0]) == 1 {
+	} else if categoryIdOk || len(categoryId) == 1 {
 		fetchedData = fb.GetFilteredData("/restaurants", "category_id", categoryId[0])
 	} else {
 		fetchedData = fb.ReadData("/restaurants")
