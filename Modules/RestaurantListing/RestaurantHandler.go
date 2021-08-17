@@ -15,15 +15,7 @@ func HandleRestaurantListing(w http.ResponseWriter, r *http.Request) {
 	cityId, cityIdOk := r.URL.Query()["city"]
 	categoryId, categoryIdOk := r.URL.Query()["category"]
 
-	var fetchedData interface{}
-
-	if cityIdOk || len(cityId) == 1 {
-		fetchedData = fb.GetFilteredData("/restaurants", "city_id", cityId[0])
-	} else if categoryIdOk || len(categoryId) == 1 {
-		fetchedData = fb.GetFilteredData("/restaurants", "category_id", categoryId[0])
-	} else {
-		fetchedData = fb.ReadData("/restaurants")
-	}
+	fetchedData := fb.ReadData("/restaurants")
 
 	if fetchedData == nil {
 		w.WriteHeader(http.StatusNotFound)
@@ -37,8 +29,24 @@ func HandleRestaurantListing(w http.ResponseWriter, r *http.Request) {
 	var restaurants []RestaurantModel
 	mapstructure.Decode(fetchedData, &restaurants)
 
+	var filteredRestaurants []RestaurantModel
+
+	if cityIdOk || len(cityId) == 1 {
+		for _, value := range restaurants {
+			if value.City_Id == cityId[0] {
+				filteredRestaurants = append(filteredRestaurants, value)
+			}
+		}
+	} else if categoryIdOk || len(categoryId) == 1 {
+		for _, value := range restaurants {
+			if value.CategoryId == categoryId[0] {
+				filteredRestaurants = append(filteredRestaurants, value)
+			}
+		}
+	}
+
 	response = util.GeneralResponseModel{
-		false, "Listeleme Başarılı", fetchedData,
+		false, "Listeleme Başarılı", filteredRestaurants,
 	}
 	w.Write(response.ToJson())
 }
