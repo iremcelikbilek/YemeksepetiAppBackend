@@ -1,6 +1,7 @@
 package search
 
 import (
+	"encoding/json"
 	"net/http"
 	"strings"
 
@@ -13,13 +14,14 @@ import (
 func HandleSearchListing(w http.ResponseWriter, r *http.Request) {
 	util.HeaderManager(&w)
 	var response util.GeneralResponseModel
+	var searchData SearchModel
 
 	cityId, cityIdOk := r.URL.Query()["city"]
 	categoryId, categoryIdOk := r.URL.Query()["category"]
-	searchKey, searchKeyOk := r.URL.Query()["search"]
 
-	if !searchKeyOk || len(searchKey) < 1 {
-		w.WriteHeader(http.StatusNotFound)
+	err := json.NewDecoder(r.Body).Decode(&searchData)
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
 		response = util.GeneralResponseModel{
 			true, "Lütfen arama yapın", nil,
 		}
@@ -63,8 +65,8 @@ func HandleSearchListing(w http.ResponseWriter, r *http.Request) {
 
 	var searchedRestaurants []listing.RestaurantModel
 	for _, value := range filteredRestaurants {
-		if strings.Contains(value.Name, searchKey[0]) {
-			filteredRestaurants = append(filteredRestaurants, value)
+		if strings.Contains(value.Name, searchData.Search) {
+			searchedRestaurants = append(searchedRestaurants, value)
 		}
 	}
 
@@ -72,4 +74,8 @@ func HandleSearchListing(w http.ResponseWriter, r *http.Request) {
 		false, "Arama Başarılı", searchedRestaurants,
 	}
 	w.Write(response.ToJson())
+}
+
+type SearchModel struct {
+	Search string `json:"search"`
 }
