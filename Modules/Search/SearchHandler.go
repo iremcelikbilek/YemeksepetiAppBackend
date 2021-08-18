@@ -53,7 +53,7 @@ func HandleSearchListing(w http.ResponseWriter, r *http.Request) {
 		}
 
 		if categoryIdOk && len(categoryId) == 1 {
-			if value.CategoryId == categoryId[0] {
+			if value.CategoryId != categoryId[0] {
 				continue
 			}
 		}
