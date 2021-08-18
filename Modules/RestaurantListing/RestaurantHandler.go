@@ -31,26 +31,30 @@ func HandleRestaurantListing(w http.ResponseWriter, r *http.Request) {
 
 	var filteredRestaurants []RestaurantModel
 
-	if cityIdOk && len(cityId) == 1 {
-		for _, value := range restaurants {
-			if value.CityId == cityId[0] {
-				filteredRestaurants = append(filteredRestaurants, value)
+	for _, value := range restaurants {
+		if cityIdOk && len(cityId) == 1 {
+			if value.CityId != cityId[0] {
+				continue
 			}
 		}
-	}
-	if categoryIdOk && len(categoryId) == 1 {
-		for _, value := range restaurants {
+
+		if categoryIdOk && len(categoryId) == 1 {
 			if value.CategoryId == categoryId[0] {
-				filteredRestaurants = append(filteredRestaurants, value)
+				continue
 			}
 		}
-	}
-	if !cityIdOk && !categoryIdOk {
-		filteredRestaurants = restaurants
+
+		filteredRestaurants = append(filteredRestaurants, value)
 	}
 
-	response = util.GeneralResponseModel{
-		false, "Listeleme Başarılı", filteredRestaurants,
+	if len(filteredRestaurants) == 0 {
+		response = util.GeneralResponseModel{
+			true, "Filtrenize uygun sonuç bulunamadı, filtrenizi değiştirin.", nil,
+		}
+	} else {
+		response = util.GeneralResponseModel{
+			false, "Arama Başarılı", filteredRestaurants,
+		}
 	}
 	w.Write(response.ToJson())
 }

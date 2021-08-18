@@ -45,22 +45,20 @@ func HandleSearchListing(w http.ResponseWriter, r *http.Request) {
 
 	var filteredRestaurants []listing.RestaurantModel
 
-	if cityIdOk && len(cityId) == 1 {
-		for _, value := range restaurants {
-			if value.CityId == cityId[0] {
-				filteredRestaurants = append(filteredRestaurants, value)
+	for _, value := range restaurants {
+		if cityIdOk && len(cityId) == 1 {
+			if value.CityId != cityId[0] {
+				continue
 			}
 		}
-	}
-	if categoryIdOk && len(categoryId) == 1 {
-		for _, value := range restaurants {
+
+		if categoryIdOk && len(categoryId) == 1 {
 			if value.CategoryId == categoryId[0] {
-				filteredRestaurants = append(filteredRestaurants, value)
+				continue
 			}
 		}
-	}
-	if !cityIdOk && !categoryIdOk {
-		filteredRestaurants = restaurants
+
+		filteredRestaurants = append(filteredRestaurants, value)
 	}
 
 	var searchedRestaurants []listing.RestaurantModel
@@ -70,9 +68,16 @@ func HandleSearchListing(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	response = util.GeneralResponseModel{
-		false, "Arama Başarılı", searchedRestaurants,
+	if len(searchedRestaurants) == 0 {
+		response = util.GeneralResponseModel{
+			true, "Aramanıza uygun sonuç bulunamadı, filtrenizi ya da aramanızı değiştirin.", nil,
+		}
+	} else {
+		response = util.GeneralResponseModel{
+			false, "Arama Başarılı", searchedRestaurants,
+		}
 	}
+
 	w.Write(response.ToJson())
 }
 
