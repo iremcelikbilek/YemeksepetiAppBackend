@@ -53,6 +53,7 @@ func HandleRemoveToBasket(w http.ResponseWriter, r *http.Request) {
 			fmt.Println(value.Menu.Id)
 			fmt.Println(menuId[0])
 			fmt.Println(value.Menu.Id != menuId[0])
+			fmt.Println(value.Id != restaurantId[0])
 			fmt.Println("")
 			fmt.Println("")
 
