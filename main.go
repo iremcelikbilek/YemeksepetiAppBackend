@@ -5,6 +5,7 @@ import (
 
 	signin "github.com/iremcelikbilek/YemeksepetiAppBackend/Modules/Auth/SignIn"
 	signup "github.com/iremcelikbilek/YemeksepetiAppBackend/Modules/Auth/SignUp"
+	basket "github.com/iremcelikbilek/YemeksepetiAppBackend/Modules/Basket"
 	categoryList "github.com/iremcelikbilek/YemeksepetiAppBackend/Modules/CategoryList"
 	cityList "github.com/iremcelikbilek/YemeksepetiAppBackend/Modules/CityList"
 	fb "github.com/iremcelikbilek/YemeksepetiAppBackend/Modules/Firebase"
@@ -22,6 +23,8 @@ func main() {
 	go http.HandleFunc("/user", user.HandleUserData)
 	go http.HandleFunc("/categoryList", categoryList.HandleCategoryListing)
 	go http.HandleFunc("/search", search.HandleSearchListing)
+	go http.HandleFunc("/basket", basket.HandleBasket)
+	go http.HandleFunc("/addToBasket", basket.HandleAddToBasket)
 
 	err := http.ListenAndServe(":8080", nil)
 	if err != nil {

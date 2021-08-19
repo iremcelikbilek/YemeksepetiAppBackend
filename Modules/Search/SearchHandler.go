@@ -80,7 +80,3 @@ func HandleSearchListing(w http.ResponseWriter, r *http.Request) {
 
 	w.Write(response.ToJson())
 }
-
-type SearchModel struct {
-	Search string `json:"search"`
-}
