@@ -40,13 +40,11 @@ func HandleAddToBasket(w http.ResponseWriter, r *http.Request) {
 	var restaurants []listing.RestaurantModel
 	mapstructure.Decode(restaurantsData, &restaurants)
 	var restaurantName string
-	var restaurantId string
 	var menu listing.MunuModel
 
 	for _, value := range restaurants {
 		if value.Id == restaurantId[0] {
 			restaurantName = value.Name
-			restaurantId = value.Id
 			for _, menu := range value.Menu {
 				if menu.Id == menuId[0] {
 					menu = menu
@@ -57,7 +55,7 @@ func HandleAddToBasket(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	var newItem = BasketModel{menu, restaurantName, restaurantId}
+	var newItem = BasketModel{menu, restaurantName, restaurantId[0]}
 
 	basketData := fb.ReadData("/basket/" + userMail)
 	if basketData == nil {
