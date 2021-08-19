@@ -54,7 +54,7 @@ func HandleRemoveToBasket(w http.ResponseWriter, r *http.Request) {
 			}
 		}
 
-		error := fb.PushData("/basket/"+useutil.MailToPath(userMail)rMail, newBasketItems)
+		error := fb.PushData("/basket/"+util.MailToPath(userMail), newBasketItems)
 		if error != nil {
 			response = util.GeneralResponseModel{
 				true, "Sepetten kaldırma başarısız", nil,
