@@ -22,7 +22,7 @@ func HandleBasket(w http.ResponseWriter, r *http.Request) {
 		userMail = message
 	}
 
-	fetchedData := fb.ReadData("/basket/" + userMail)
+	fetchedData := fb.ReadData("/basket/" + util.MailToPath(userMail))
 	if fetchedData == nil {
 		w.WriteHeader(http.StatusNotFound)
 		response = util.GeneralResponseModel{

@@ -36,7 +36,7 @@ func HandleRemoveToBasket(w http.ResponseWriter, r *http.Request) {
 	}
 
 	var newBasketItems []BasketModel
-	basketData := fb.ReadData("/basket/" + userMail)
+	basketData := fb.ReadData("/basket/" + util.MailToPath(userMail))
 	if basketData == nil {
 		response = util.GeneralResponseModel{
 			true, "Sepete zaten boş", nil,
@@ -54,7 +54,7 @@ func HandleRemoveToBasket(w http.ResponseWriter, r *http.Request) {
 			}
 		}
 
-		error := fb.PushData("/basket/"+userMail, newBasketItems)
+		error := fb.PushData("/basket/"+useutil.MailToPath(userMail)rMail, newBasketItems)
 		if error != nil {
 			response = util.GeneralResponseModel{
 				true, "Sepetten kaldırma başarısız", nil,

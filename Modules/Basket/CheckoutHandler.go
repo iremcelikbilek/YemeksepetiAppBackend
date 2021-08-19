@@ -22,7 +22,7 @@ func HandleCheckout(w http.ResponseWriter, r *http.Request) {
 		userMail = message
 	}
 
-	fetchedData := fb.ReadData("/basket/" + userMail)
+	fetchedData := fb.ReadData("/basket/" + util.MailToPath(userMail))
 	if fetchedData == nil {
 		w.WriteHeader(http.StatusNotFound)
 		response = util.GeneralResponseModel{
@@ -32,7 +32,7 @@ func HandleCheckout(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	error := fb.PushData("/history/"+userMail, fetchedData)
+	error := fb.PushData("/history/"+util.MailToPath(userMail), fetchedData)
 	if error != nil {
 		response = util.GeneralResponseModel{
 			true, "Sepetten kaldırma başarısız", nil,
@@ -42,7 +42,7 @@ func HandleCheckout(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	_ = fb.DeletePath("/basket/" + userMail)
+	_ = fb.DeletePath("/basket/" + util.MailToPath(userMail))
 
 	response = util.GeneralResponseModel{
 		false, "Başarılı", nil,

@@ -57,9 +57,9 @@ func HandleAddToBasket(w http.ResponseWriter, r *http.Request) {
 
 	var newItem = BasketModel{menu, restaurantName, restaurantId[0]}
 
-	basketData := fb.ReadData("/basket/" + userMail)
+	basketData := fb.ReadData("/basket/" + util.MailToPath(userMail))
 	if basketData == nil {
-		error := fb.PushData("/basket/"+userMail, [1]BasketModel{newItem})
+		error := fb.PushData("/basket/"+util.MailToPath(userMail), [1]BasketModel{newItem})
 		if error != nil {
 			response = util.GeneralResponseModel{
 				true, "Sepete ekleme başarısız", nil,
@@ -72,7 +72,7 @@ func HandleAddToBasket(w http.ResponseWriter, r *http.Request) {
 		var basketItems []BasketModel
 		mapstructure.Decode(basketData, &basketItems)
 		basketItems = append(basketItems, newItem)
-		error := fb.PushData("/basket/"+userMail, basketItems)
+		error := fb.PushData("/basket/"+util.MailToPath(userMail), basketItems)
 		if error != nil {
 			response = util.GeneralResponseModel{
 				true, "Sepete ekleme başarısız", nil,
