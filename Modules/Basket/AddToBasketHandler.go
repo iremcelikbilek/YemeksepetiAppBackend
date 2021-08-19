@@ -59,7 +59,7 @@ func HandleAddToBasket(w http.ResponseWriter, r *http.Request) {
 
 	basketData := fb.ReadData("/basket/" + userMail)
 	if basketData == nil {
-		error := fb.PushData("/basket/"+userMail, [1]listing.MunuModel{newItem})
+		error := fb.PushData("/basket/"+userMail, [1]BasketModel{newItem})
 		if error != nil {
 			response = util.GeneralResponseModel{
 				true, "Sepete ekleme başarısız", nil,

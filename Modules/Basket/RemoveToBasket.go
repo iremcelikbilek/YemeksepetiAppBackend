@@ -49,16 +49,7 @@ func HandleRemoveToBasket(w http.ResponseWriter, r *http.Request) {
 		mapstructure.Decode(basketData, &basketItems)
 
 		for _, value := range basketItems {
-			var isAdd = true
-			if value.Id == restaurantId[0] {
-				for _, menu := range value.Menu {
-					if menu.Id == menuId[0] {
-						isAdd = false
-					}
-				}
-			}
-
-			if isAdd {
+			if value.Id != restaurantId[0] && value.Menu.Id != menuId[0] {
 				newBasketItems = append(newBasketItems, value)
 			}
 		}
