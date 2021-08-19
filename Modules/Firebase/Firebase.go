@@ -141,6 +141,14 @@ func Delete(path string, child string, equal string) error {
 	return nil
 }
 
+func DeletePath(path string) error {
+	err := client.NewRef(path).Delete(ctx)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 func ReadData(path string) interface{} {
 	var data interface{}
 	if err := client.NewRef(path).Get(ctx, &data); err != nil {

@@ -4,12 +4,11 @@ import (
 	"net/http"
 
 	fb "github.com/iremcelikbilek/YemeksepetiAppBackend/Modules/Firebase"
-	listing "github.com/iremcelikbilek/YemeksepetiAppBackend/Modules/RestaurantListing"
 	util "github.com/iremcelikbilek/YemeksepetiAppBackend/Modules/Utils"
 	"github.com/mitchellh/mapstructure"
 )
 
-func HandleAddToBasket(w http.ResponseWriter, r *http.Request) {
+func HandleRemoveToBasket(w http.ResponseWriter, r *http.Request) {
 	util.HeaderManager(&w)
 	var response util.GeneralResponseModel
 
@@ -36,48 +35,38 @@ func HandleAddToBasket(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	restaurantsData := fb.ReadData("/restaurants")
-	var restaurants []listing.RestaurantModel
-	mapstructure.Decode(restaurantsData, &restaurants)
-	var restaurantName string
-	var restaurantId string
-	var menu listing.MunuModel
-
-	for _, value := range restaurants {
-		if value.Id == restaurantId[0] {
-			restaurantName = value.Name
-			restaurantId = value.Id
-			for _, menu := range value.Menu {
-				if menu.Id == menuId[0] {
-					menu = menu
-					break
-				}
-			}
-			break
-		}
-	}
-
-	var newItem = BasketModel{menu, restaurantName, restaurantId}
-
+	var newBasketItems []BasketModel
 	basketData := fb.ReadData("/basket/" + userMail)
 	if basketData == nil {
-		error := fb.PushData("/basket/"+userMail, [1]listing.MunuModel{newItem})
-		if error != nil {
-			response = util.GeneralResponseModel{
-				true, "Sepete ekleme başarısız", nil,
-			}
-			w.WriteHeader(http.StatusInternalServerError)
-			w.Write(response.ToJson())
-			return
+		response = util.GeneralResponseModel{
+			true, "Sepete zaten boş", nil,
 		}
+		w.WriteHeader(http.StatusNotFound)
+		w.Write(response.ToJson())
+		return
 	} else {
 		var basketItems []BasketModel
 		mapstructure.Decode(basketData, &basketItems)
-		basketItems = append(basketItems, newItem)
-		error := fb.PushData("/basket/"+userMail, basketItems)
+
+		for _, value := range basketItems {
+			var isAdd = true
+			if value.Id == restaurantId[0] {
+				for _, menu := range value.Menu {
+					if menu.Id == menuId[0] {
+						isAdd = false
+					}
+				}
+			}
+
+			if isAdd {
+				newBasketItems = append(newBasketItems, value)
+			}
+		}
+
+		error := fb.PushData("/basket/"+userMail, newBasketItems)
 		if error != nil {
 			response = util.GeneralResponseModel{
-				true, "Sepete ekleme başarısız", nil,
+				true, "Sepetten kaldırma başarısız", nil,
 			}
 			w.WriteHeader(http.StatusInternalServerError)
 			w.Write(response.ToJson())
@@ -86,7 +75,7 @@ func HandleAddToBasket(w http.ResponseWriter, r *http.Request) {
 	}
 
 	response = util.GeneralResponseModel{
-		false, "Başarılı", nil,
+		false, "Başarılı", newBasketItems,
 	}
 	w.Write(response.ToJson())
 }
