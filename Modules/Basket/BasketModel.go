@@ -5,7 +5,7 @@ import (
 )
 
 type BasketModel struct {
-	Menu []listing.MunuModel `json:"menu"`
-	Name string              `json:"name"`
-	Id   string              `json:"id"`
+	Menu listing.MunuModel `json:"menu"`
+	Name string            `json:"name"`
+	Id   string            `json:"id"`
 }
