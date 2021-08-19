@@ -1,6 +1,7 @@
 package basket
 
 import (
+	"fmt"
 	"net/http"
 
 	fb "github.com/iremcelikbilek/YemeksepetiAppBackend/Modules/Firebase"
@@ -39,7 +40,7 @@ func HandleRemoveToBasket(w http.ResponseWriter, r *http.Request) {
 	basketData := fb.ReadData("/basket/" + util.MailToPath(userMail))
 	if basketData == nil {
 		response = util.GeneralResponseModel{
-			true, "Sepete zaten boş", nil,
+			true, "Sepet zaten boş", nil,
 		}
 		w.WriteHeader(http.StatusNotFound)
 		w.Write(response.ToJson())
@@ -49,6 +50,10 @@ func HandleRemoveToBasket(w http.ResponseWriter, r *http.Request) {
 		mapstructure.Decode(basketData, &basketItems)
 
 		for _, value := range basketItems {
+			fmt.Println(value.Menu.Id)
+			fmt.Println(menuId[0])
+			fmt.Println()
+
 			if value.Id != restaurantId[0] && value.Menu.Id != menuId[0] {
 				newBasketItems = append(newBasketItems, value)
 			}
