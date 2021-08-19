@@ -52,7 +52,9 @@ func HandleRemoveToBasket(w http.ResponseWriter, r *http.Request) {
 		for _, value := range basketItems {
 			fmt.Println(value.Menu.Id)
 			fmt.Println(menuId[0])
-			fmt.Println()
+			fmt.Println(value.Menu.Id != menuId[0])
+			fmt.Println("")
+			fmt.Println("")
 
 			if value.Id != restaurantId[0] && value.Menu.Id != menuId[0] {
 				newBasketItems = append(newBasketItems, value)
