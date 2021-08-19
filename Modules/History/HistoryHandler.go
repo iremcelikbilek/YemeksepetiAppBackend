@@ -22,7 +22,7 @@ func HandleHistory(w http.ResponseWriter, r *http.Request) {
 		userMail = message
 	}
 
-	fetchedData := fb.ReadData("/history/" + userMail)
+	fetchedData := fb.ReadData("/history/" + util.MailToPath(userMail))
 	if fetchedData == nil {
 		w.WriteHeader(http.StatusNotFound)
 		response = util.GeneralResponseModel{

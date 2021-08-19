@@ -4,7 +4,7 @@ import "strings"
 
 func MailToPath(mail string) string {
 	var formatted = strings.ReplaceAll(mail, "@", "-")
-	formatted = strings.ReplaceAll(mail, ".", "-")
-	formatted = strings.ReplaceAll(mail, "_", "-")
+	formatted = strings.ReplaceAll(formatted, ".", "-")
+	formatted = strings.ReplaceAll(formatted, "_", "-")
 	return formatted
 }
