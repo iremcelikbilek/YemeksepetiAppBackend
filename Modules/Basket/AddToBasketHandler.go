@@ -70,7 +70,7 @@ func HandleAddToBasket(w http.ResponseWriter, r *http.Request) {
 	if basketData == nil {
 		var data []BasketModel
 		for i := 1; i <= totalBAsketCount; i++ {
-			data = append(basketItems, newItem)
+			data = append(data, newItem)
 		}
 		error := fb.WriteData("/basket/"+util.MailToPath(userMail), data)
 		if error != nil {
