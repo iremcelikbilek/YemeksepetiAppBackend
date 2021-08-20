@@ -2,7 +2,7 @@ package basket
 
 import (
 	"net/http"
-
+	"strconv"
 	fb "github.com/iremcelikbilek/YemeksepetiAppBackend/Modules/Firebase"
 	listing "github.com/iremcelikbilek/YemeksepetiAppBackend/Modules/RestaurantListing"
 	util "github.com/iremcelikbilek/YemeksepetiAppBackend/Modules/Utils"
@@ -26,6 +26,15 @@ func HandleAddToBasket(w http.ResponseWriter, r *http.Request) {
 
 	restaurantId, restaurantIdOk := r.URL.Query()["restaurant"]
 	menuId, menuIdOk := r.URL.Query()["menu"]
+	basketCount, basketCountOk := r.URL.Query()["count"]
+	var totalBAsketCount int = 1
+
+	if basketCountOk && len(basketCount) == 1 {
+		value, err := strconv.Atoi(basketCount[0])
+		if err == nil {
+			totalBAsketCount = value
+		}
+	}
 
 	if !menuIdOk || !restaurantIdOk || len(restaurantId) != 1 || len(menuId) != 1 {
 		w.WriteHeader(http.StatusBadRequest)
@@ -59,7 +68,11 @@ func HandleAddToBasket(w http.ResponseWriter, r *http.Request) {
 
 	basketData := fb.ReadData("/basket/" + util.MailToPath(userMail))
 	if basketData == nil {
-		error := fb.WriteData("/basket/"+util.MailToPath(userMail), [1]BasketModel{newItem})
+		var data []BasketModel
+		for i := 1; i <= totalBAsketCount; i++ {
+			data = append(basketItems, newItem)
+		}
+		error := fb.WriteData("/basket/"+util.MailToPath(userMail), data)
 		if error != nil {
 			response = util.GeneralResponseModel{
 				true, "Sepete ekleme başarısız", nil,
@@ -71,7 +84,11 @@ func HandleAddToBasket(w http.ResponseWriter, r *http.Request) {
 	} else {
 		var basketItems []BasketModel
 		mapstructure.Decode(basketData, &basketItems)
-		basketItems = append(basketItems, newItem)
+
+		for i := 1; i <= totalBAsketCount; i++ {
+			basketItems = append(basketItems, newItem)
+		}
+		
 		error := fb.WriteData("/basket/"+util.MailToPath(userMail), basketItems)
 		if error != nil {
 			response = util.GeneralResponseModel{

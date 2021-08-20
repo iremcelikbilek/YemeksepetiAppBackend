@@ -47,13 +47,12 @@ func HandleRemoveToBasket(w http.ResponseWriter, r *http.Request) {
 	} else {
 		var basketItems []BasketModel
 		mapstructure.Decode(basketData, &basketItems)
-		var isDeleted = false
 
 		for _, value := range basketItems {
-			if (value.Id != restaurantId[0] || value.Menu.Id != menuId[0]) && !isDeleted {
+			if value.Id != restaurantId[0] || value.Menu.Id != menuId[0] {
 				newBasketItems = append(newBasketItems, value)
 			} else {
-				isDeleted = true
+				break
 			}
 		}
 
