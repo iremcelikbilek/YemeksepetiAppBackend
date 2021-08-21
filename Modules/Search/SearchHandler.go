@@ -29,23 +29,24 @@ func HandleSearchListing(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	fetchedData := fb.ReadData("/restaurants")
+	if listing.AllRestaurants == nil {
+		fetchedData := fb.ReadData("/restaurants")
 
-	if fetchedData == nil {
-		w.WriteHeader(http.StatusNotFound)
-		response = util.GeneralResponseModel{
-			true, "Üzgünüz herhangi bir restoran bulunamadı", nil,
+		if fetchedData == nil {
+			w.WriteHeader(http.StatusNotFound)
+			response = util.GeneralResponseModel{
+				true, "Üzgünüz herhangi bir restoran bulunamadı", nil,
+			}
+			w.Write(response.ToJson())
+			return
 		}
-		w.Write(response.ToJson())
-		return
-	}
 
-	var restaurants []listing.RestaurantModel
-	mapstructure.Decode(fetchedData, &restaurants)
+		mapstructure.Decode(fetchedData, &listing.AllRestaurants)
+	}
 
 	var filteredRestaurants []listing.RestaurantModel
 
-	for _, value := range restaurants {
+	for _, value := range listing.AllRestaurants {
 		if cityIdOk && len(cityId) == 1 {
 			if value.CityId != cityId[0] {
 				continue
