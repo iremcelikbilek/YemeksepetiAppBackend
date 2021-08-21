@@ -12,9 +12,10 @@ type RestaurantModel struct {
 }
 
 type MunuModel struct {
-	Name        string `json:"name"`
-	Id          string `json:"id"`
-	ImageUrl    string `json:"image_url"`
-	Price       string `json:"price"`
-	Description string `json:"description"`
+	Name        string  `json:"name"`
+	Id          string  `json:"id"`
+	ImageUrl    string  `json:"image_url"`
+	Price       string  `json:"price"`
+	Description string  `json:"description"`
+	DoublePrice float32 `json:"doublePrice"`
 }
