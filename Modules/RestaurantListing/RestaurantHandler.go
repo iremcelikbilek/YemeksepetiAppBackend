@@ -8,6 +8,8 @@ import (
 	"github.com/mitchellh/mapstructure"
 )
 
+var allRestaurants []RestaurantModel
+
 func HandleRestaurantListing(w http.ResponseWriter, r *http.Request) {
 	util.HeaderManager(&w)
 	var response util.GeneralResponseModel
@@ -15,23 +17,23 @@ func HandleRestaurantListing(w http.ResponseWriter, r *http.Request) {
 	cityId, cityIdOk := r.URL.Query()["city"]
 	categoryId, categoryIdOk := r.URL.Query()["category"]
 
-	fetchedData := fb.ReadData("/restaurants")
-
-	if fetchedData == nil {
-		w.WriteHeader(http.StatusNotFound)
-		response = util.GeneralResponseModel{
-			true, "Üzgünüz herhangi bir restoran bulunamadı", nil,
+	if allRestaurants == nil {
+		fetchedData := fb.ReadData("/restaurants")
+		if fetchedData == nil {
+			w.WriteHeader(http.StatusNotFound)
+			response = util.GeneralResponseModel{
+				true, "Üzgünüz herhangi bir restoran bulunamadı", nil,
+			}
+			w.Write(response.ToJson())
+			return
 		}
-		w.Write(response.ToJson())
-		return
-	}
 
-	var restaurants []RestaurantModel
-	mapstructure.Decode(fetchedData, &restaurants)
+		mapstructure.Decode(fetchedData, &allRestaurants)
+	}
 
 	var filteredRestaurants []RestaurantModel
 
-	for _, value := range restaurants {
+	for _, value := range allRestaurants {
 		if cityIdOk && len(cityId) == 1 {
 			if value.CityId != cityId[0] {
 				continue
