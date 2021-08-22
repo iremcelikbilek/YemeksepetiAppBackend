@@ -22,7 +22,6 @@ func HandleLogin(w http.ResponseWriter, r *http.Request) {
 
 	err := json.NewDecoder(r.Body).Decode(&loginData)
 	if err != nil {
-		w.WriteHeader(http.StatusBadRequest)
 		response = util.GeneralResponseModel{
 			true, "Gelen veriler hatalı :(", nil,
 		}
@@ -35,7 +34,6 @@ func HandleLogin(w http.ResponseWriter, r *http.Request) {
 			true, "eMail geçersiz", nil,
 		}
 		w.Write(response.ToJson())
-		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
 
@@ -47,7 +45,6 @@ func HandleLogin(w http.ResponseWriter, r *http.Request) {
 		response = util.GeneralResponseModel{
 			true, "Kullanıcı veya şifre hatalı", nil,
 		}
-		w.WriteHeader(http.StatusNotFound)
 		w.Write(response.ToJson())
 		return
 	}
@@ -56,7 +53,6 @@ func HandleLogin(w http.ResponseWriter, r *http.Request) {
 		response = util.GeneralResponseModel{
 			true, "Kullanıcı veya şifre hatalı", nil,
 		}
-		w.WriteHeader(http.StatusNotFound)
 		w.Write(response.ToJson())
 		return
 	}

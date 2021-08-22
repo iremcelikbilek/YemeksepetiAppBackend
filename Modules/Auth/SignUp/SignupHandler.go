@@ -25,7 +25,6 @@ func HandleSignUp(w http.ResponseWriter, r *http.Request) {
 			true, "Gelen veriler hatalı", nil,
 		}
 		w.Write(response.ToJson())
-		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
 
@@ -34,7 +33,6 @@ func HandleSignUp(w http.ResponseWriter, r *http.Request) {
 			true, "eMail geçersiz", nil,
 		}
 		w.Write(response.ToJson())
-		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
 
@@ -43,7 +41,6 @@ func HandleSignUp(w http.ResponseWriter, r *http.Request) {
 			true, "İsim veya Soyisim en az 2 karakterli olmalıdır.", nil,
 		}
 		w.Write(response.ToJson())
-		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
 
@@ -52,7 +49,6 @@ func HandleSignUp(w http.ResponseWriter, r *http.Request) {
 			true, "Parola en az 8 karakterli olmalıdır.", nil,
 		}
 		w.Write(response.ToJson())
-		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
 
@@ -61,7 +57,6 @@ func HandleSignUp(w http.ResponseWriter, r *http.Request) {
 			true, "Telefon numarası en az 11 karakterli olmalıdır.", nil,
 		}
 		w.Write(response.ToJson())
-		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
 
@@ -74,7 +69,6 @@ func HandleSignUp(w http.ResponseWriter, r *http.Request) {
 			true, "eMail zaten kullanımda", nil,
 		}
 		w.Write(response.ToJson())
-		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
 
