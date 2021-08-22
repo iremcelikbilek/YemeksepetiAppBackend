@@ -21,7 +21,6 @@ func HandleSearchListing(w http.ResponseWriter, r *http.Request) {
 
 	err := json.NewDecoder(r.Body).Decode(&searchData)
 	if err != nil {
-		w.WriteHeader(http.StatusBadRequest)
 		response = util.GeneralResponseModel{
 			true, "Lütfen arama yapın", nil,
 		}
@@ -33,7 +32,6 @@ func HandleSearchListing(w http.ResponseWriter, r *http.Request) {
 		fetchedData := fb.ReadData("/restaurants")
 
 		if fetchedData == nil {
-			w.WriteHeader(http.StatusNotFound)
 			response = util.GeneralResponseModel{
 				true, "Üzgünüz herhangi bir restoran bulunamadı", nil,
 			}
